@@ -1,2 +1,5 @@
 # Paint_solve
-#use 
+use python 9.0
+```
+ pip install -r requirements.txt
+```

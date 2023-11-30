@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user',
     'dashboard',
-    "phonenumber_field",
+    # "phonenumber_field",
     'crispy_forms',
     'crispy_bootstrap4',
     # 'django_filters',

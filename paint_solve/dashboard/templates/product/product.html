@@ -1,0 +1,52 @@
+{% extends 'dashboard/base.html'%}
+{% load crispy_forms_tags %}
+{% block content%}
+
+<div class="row">
+  <div class="col">
+    <div class="card card-body">
+      <form action="" method="POST">
+        {% csrf_token %}
+        {{form|crispy}}
+        <br>
+        <input type="submit" value='Search'/>
+      </form>
+    </div>
+  </div>
+</div>
+<br>
+<table class="table table-striped table-hover table-bordered">
+    <thead class="table-dark">
+      <tr>
+        
+        
+        <th scope="col" class="text-center">Color name</th>
+        <th scope="col" class="text-center">Category</th>
+        <th scope="col" class="text-center">Brand</th>
+        <th scope="col"class="text-center">Color code</th>
+        <th scope="col"class="text-center">Quantity</th>
+        <th scope="col"class="text-center">Price</th>
+        
+      </tr>
+    </thead>
+    <tbody>
+      
+    
+{% if prod %}
+    
+    {% for prods in prod %}
+        <tr>
+        
+        
+        <td class="text-center"><a href="{% url 'records' prods.id %}">{{prods.Color_name}}</a></td> 
+        <td class="text-center">{{prods.Category}}</td>
+        <td class="text-center">{{prods.Brand}}</td> 
+        <td class="text-center">{{prods.Color_code}}</td> 
+        <td class="text-center">{{prods.quantity}}</td> 
+        <td class="text-center">{{prods.price}}</td> 
+        </tr>
+    {% endfor %}
+{% endif%}
+</tbody>
+</table>
+{% endblock %}

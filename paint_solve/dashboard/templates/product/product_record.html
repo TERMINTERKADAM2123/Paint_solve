@@ -1,0 +1,36 @@
+{% extends 'dashboard/base.html'%}
+
+{%block content%}
+
+<div class="card">
+    <div class="card-header">
+      <strong>Records</strong>
+    </div>
+   
+    <div class="card-body">
+      
+      <p class="card-text">
+        <strong>Color Name</strong> {{product_record.Color_name}}</p>
+
+        <p class="card-text">
+            <strong>Category :</strong> {{product_record.Category}} </p>
+        <p class="card-text">
+        <strong>Brand :</strong>{{product_record.Brand}} <br>
+        <p class="card-text">
+        <strong>Color Code :</strong>{{product_record.Color_code}} </p>
+        <p class="card-text">
+        <strong>Quantity :</strong>{{product_record.quantity}} </p>
+        <p class="card-text"></p>
+        <strong>Price :</strong>{{product_record.price}} <br>
+        
+      </p>
+      <a href="{% url 'home'  %}" class="btn btn-secondary">Back</a>
+       <a href="{% url 'delete_records' product_record.id %}" class="btn btn-danger">delete</a>
+       <a href="{% url 'update_records' product_record.id %}" class="btn btn-secondary">Update</a>
+    </div>
+  </div>
+
+  
+        
+        
+{% endblock %}

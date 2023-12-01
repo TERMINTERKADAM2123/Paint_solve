@@ -1,5 +1,5 @@
 from django import forms
-from .models import Product
+from .models import Product ,Supplier
 CATEGORY = (
     ('Oil Paint','Oil Paint'),
     ('Cement Paint','Cement Paint'),
@@ -30,3 +30,8 @@ class StockSearchForm(forms.ModelForm):
    class Meta:
      model = Product
      fields = ['Category','Brand',]
+     
+class SupplierAddForm(forms.ModelForm):
+    class Meta:
+     model = Supplier
+     fields = ['Supplier_Name','Supplier_Phone_number']

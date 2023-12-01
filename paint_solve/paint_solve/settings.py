@@ -85,7 +85,7 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'invent6',
+        'NAME': 'invent',
         'USER':'root',
         'PASSWORD':'PASSWORD@123',
         'HOST':'localhost',

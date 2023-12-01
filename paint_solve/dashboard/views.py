@@ -1,8 +1,8 @@
 from django.shortcuts import render ,redirect
-from .models import Product
+from .models import Product , Supplier
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import AddRecordForm  ,StockSearchForm
+from .forms import AddRecordForm  ,StockSearchForm ,SupplierAddForm
 # from .filters import ProductFilter
 # Create your views here.
 
@@ -32,8 +32,9 @@ def product_record(request,pk):
 def delete_record(request,pk):
     delete_it = Product.objects.get(id=pk)
     delete_it.delete()
+    delete_it.is_deleted = True
     messages.success(request,"Product Record is deleted Successfully  ")
-    return redirect('home')
+    return redirect('products')
 
 @login_required()
 def add_record(request):
@@ -41,7 +42,7 @@ def add_record(request):
     if request.method == "POST":
             if form.is_valid():
                 add_record = form.save()
-                messages.success(request,"record add")
+                messages.success(request,"Product added Successfully ")
                 return redirect('products')
     return render(request,'product/add_record.html',{'form':form})
 
@@ -54,3 +55,21 @@ def update_records(request,pk):
         messages.success(request,"record has been updated")
         return redirect('home')
     return render(request,'product/update_records.html',{'form':form})
+
+@login_required()
+def supplier(request):
+    supplier = Supplier.objects.all()
+    context = {'supplier':supplier,}
+    return render(request,'supplier/supplier.html',context)
+
+@login_required()
+def add_supplier(request):
+    if request.method == "POST":
+        form : SupplierAddForm(request.POST )
+        if form.is_valid():
+            add_supplier = form.save()
+            messages.success(request,"Supplier added Successfuly !")
+            return redirect('supplier')
+    else:
+        form = SupplierAddForm()
+    return render(request,'supplier/add_supplier.html',{'form':form})

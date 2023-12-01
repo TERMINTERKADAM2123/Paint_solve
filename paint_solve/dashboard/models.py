@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 BRAND = (
     ('Asian Paints','Asian Paints'),
     ('Berger Paints','Berger Paints'),
@@ -40,3 +40,16 @@ class Product(models.Model):
     
     def __str__(self):
         return f'{self.Color_name}-{self.Category}-{self.Brand}-{self.Color_code}-{self.quantity}-{self.price}'
+    
+
+#need changes
+class Supplier(models.Model):
+    Supplier_Name = models.CharField(max_length=100,null=False)
+    Supplier_Phone_number = models.CharField(max_length=100,null=False)
+    product = models.ForeignKey(Product,on_delete=models.CASCADE,null=False )
+    #staff = models.ForeignKey(User,on_delete=models.CASCADE,null=False)
+    date = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f'{self.Supplier_Name}-{self.Supplier_Phone_number} supplied the {self.product.Category}  {self.product.Brand}  {self.product.Color_code}and ordered by  on {self.date}'
+    

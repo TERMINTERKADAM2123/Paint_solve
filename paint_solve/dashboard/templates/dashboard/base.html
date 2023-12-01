@@ -24,6 +24,7 @@
     </style>
   <body>
     {% include 'dashboard/navbar.html'%}
+    
     <div class="container">
     </br>
     {%  if messages %}
@@ -35,6 +36,7 @@
               </div>
       {% endfor%}
     {% endif%}
+    
      
     {% block content %}
 

@@ -27,19 +27,34 @@ CATEGORY = (
 )
 
 
+# class Product(models.Model):
+#     Color_name = models.CharField(max_length=100,null=False)
+#     Category = models.CharField(max_length=100,null=False,choices=CATEGORY)
+#     Brand = models.CharField(max_length=100,null=False,choices=BRAND)
+#     Color_code = models.CharField(max_length=10,null=False)
+#     quantity = models.PositiveIntegerField(null=True, blank=True)
+#     price = models.PositiveIntegerField(null=True, blank=True)
+    
+#     class Meta:
+#         verbose_name_plural = 'product'
+    
+#     def __str__(self):
+#         return f'{self.Color_name}-{self.Category}-{self.Brand}-{self.Color_code}-{self.quantity}-{self.price}'
+
 class Product(models.Model):
-    Color_name = models.CharField(max_length=100,null=False)
-    Category = models.CharField(max_length=100,null=False,choices=CATEGORY)
-    Brand = models.CharField(max_length=100,null=False,choices=BRAND)
-    Color_code = models.CharField(max_length=10,null=False)
-    quantity = models.PositiveIntegerField(null=True, blank=True)
-    price = models.PositiveIntegerField(null=True, blank=True)
-    
+    Color_name = models.CharField(max_length=100, null=False)
+    Category = models.CharField(max_length=100, null=False, choices=CATEGORY)
+    Brand = models.CharField(max_length=100, null=False, choices=BRAND)
+    Color_code = models.CharField(max_length=10, null=False)
+    quantity = models.IntegerField(null=False)  
+    price = models.IntegerField(null=False)  
+
     class Meta:
-        verbose_name_plural = 'product'
-    
+        verbose_name_plural = 'products'
+
     def __str__(self):
         return f'{self.Color_name}-{self.Category}-{self.Brand}-{self.Color_code}-{self.quantity}-{self.price}'
+
     
 
 #need changes
@@ -47,7 +62,8 @@ class Supplier(models.Model):
     Supplier_Name = models.CharField(max_length=100,null=False)
     Supplier_Phone_number = models.CharField(max_length=100,null=False)
     product = models.ForeignKey(Product,on_delete=models.CASCADE,null=False )
-    #staff = models.ForeignKey(User,on_delete=models.CASCADE,null=False)
+    
+    
     date = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):

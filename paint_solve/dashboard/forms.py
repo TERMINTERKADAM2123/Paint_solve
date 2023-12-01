@@ -14,6 +14,18 @@ CATEGORY = (
     
 )
 
+BRAND = (
+    ('Asian Paints','Asian Paints'),
+    ('Berger Paints','Berger Paints'),
+    ('Kansai Nerolac Paints','Kansai Nerolac Paints'),
+    ('AkzoNobel India','AkzoNobel India'),
+    ('Indigo Paints','Indigo Paints'),
+    ('Nippon Paints','Nippon Paints'),
+    ('Shalimar Paints','Shalimar Paints'),	
+    ('Dulux Paints','Dulux Paints'),
+    ('Jenson & Nicholson Paints','Jenson & Nicholson Paints'),	
+    ('Sheenlac Paints','Sheenlac Paints'),
+    )
 class AddRecordForm(forms.ModelForm):
     # Color_name = forms.CharField(required=True,widget=forms.widgets.TextInput(attrs={"placeholder":"Color Name","class":"form-control"}),label="")
     # Category = forms.CharField(required=True,choices=CATEGORY,widget=forms.widgets.ChoiceWidget(attrs={"placeholder":"Category ","class":"form-control"}),label="")
@@ -31,7 +43,18 @@ class StockSearchForm(forms.ModelForm):
      model = Product
      fields = ['Category','Brand',]
      
+# class SupplierAddForm(forms.ModelForm):
+#     class Meta:
+#      model = Supplier
+#      fields = '__all__'
+     
 class SupplierAddForm(forms.ModelForm):
     class Meta:
-     model = Supplier
-     fields = ['Supplier_Name','Supplier_Phone_number']
+        model = Supplier
+        fields = ['Supplier_Name', 'Supplier_Phone_number', 'color_name', 'category', 'brand', 'quantity', 'price']
+
+    color_name = forms.CharField(max_length=100)
+    category = forms.ChoiceField(choices=CATEGORY)
+    brand = forms.ChoiceField(choices=BRAND)
+    quantity = forms.IntegerField()
+    price = forms.IntegerField()

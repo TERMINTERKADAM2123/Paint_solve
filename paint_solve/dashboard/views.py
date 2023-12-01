@@ -11,6 +11,7 @@ def home(request):
     
     return render(request,'dashboard/home.html',{})
 
+#product
 @login_required()
 def product_view(request):
     form = StockSearchForm(request.POST or None )
@@ -56,20 +57,75 @@ def update_records(request,pk):
         return redirect('home')
     return render(request,'product/update_records.html',{'form':form})
 
+#supplier 
 @login_required()
 def supplier(request):
     supplier = Supplier.objects.all()
     context = {'supplier':supplier,}
     return render(request,'supplier/supplier.html',context)
 
+# @login_required()
+# def add_supplier(request):
+#     if request.method == "POST":
+#         form : SupplierAddForm(request.POST )
+#         if form.is_valid():
+#             add_supplier = form.save()
+#             messages.success(request,"Supplier added Successfuly !")
+#             return redirect('supplier')
+#         else:
+#             return redirect('home')
+#     else:
+#         form = SupplierAddForm()
+#     return render(request,'supplier/add_supplier.html',{'form':form})
+
+# @login_required()
+# def add_supplier(request):
+#     if request.method == "POST":
+#         form = SupplierAddForm(request.POST)
+#         if form.is_valid():
+#             add_supplier = form.save()
+#             messages.success(request, "Supplier added successfully!")
+#             return redirect('supplier')
+#         else:
+#             # You might want to handle form errors here
+#             messages.error(request, "Form is not valid. Please check the inputs.")
+#             return redirect('home')
+#     else:
+#         form = SupplierAddForm()  # Correct indentation here
+#     return render(request, 'supplier/add_supplier.html', {'form': form})
 @login_required()
 def add_supplier(request):
     if request.method == "POST":
-        form : SupplierAddForm(request.POST )
+        form = SupplierAddForm(request.POST)
         if form.is_valid():
-            add_supplier = form.save()
-            messages.success(request,"Supplier added Successfuly !")
-            return redirect('supplier')
+            # Save the form without committing to get the Product instance
+            supplier_instance = form.save(commit=False)
+            
+            # You may need to adjust the following lines based on your form structure
+            # Assuming the form contains fields related to Product (Color_name, Category, Brand)
+            product_color_name = form.cleaned_data.get('color_name')
+            product_category = form.cleaned_data.get('category')
+            product_brand = form.cleaned_data.get('brand')
+            
+            # Fetch the corresponding Product instance or create a new one if not exists
+            product, created = Product.objects.get_or_create(
+                Color_name=product_color_name,
+                Category=product_category,
+                Brand=product_brand
+            )
+            
+            # Assign the Product instance to the Supplier model
+            supplier_instance.product = product
+            
+            # Save the Supplier instance
+            supplier_instance.save()
+            
+            messages.success(request, "Supplier added successfully!")
+            return redirect('supplier')  # Replace with your actual URL name for the supplier list
+        else:
+            messages.error(request, "Form is not valid. Please check the inputs.")
+            return redirect('home')  # Replace with your actual URL name for the home page
     else:
         form = SupplierAddForm()
-    return render(request,'supplier/add_supplier.html',{'form':form})
+    
+    return render(request, 'supplier/add_supplier.html', {'form': form})

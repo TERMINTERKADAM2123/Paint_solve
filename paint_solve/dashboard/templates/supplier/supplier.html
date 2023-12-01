@@ -22,6 +22,13 @@
         
         <th scope="col" class="text-center">Name</th>
         <th scope="col" class="text-center">Phone number</th>
+        <th scope="col" class="text-center">Color name</th>
+        <th scope="col" class="text-center">Category</th>
+        <th scope="col" class="text-center">Brand</th>
+        <th scope="col"class="text-center">Color code</th>
+        <th scope="col"class="text-center">Quantity</th>
+        <th scope="col"class="text-center">Price</th>
+        <th scope="col" class="text-center">date</th>
         
         <!-- <th scope="col"class="text-center">Activity</th> -->
         
@@ -30,22 +37,21 @@
     <tbody>
       
     
-{% if supplier %}
-    
-    {% for suppliers in supplier %}
+      {% if supplier %}
+      {% for suppliers in supplier %}
         <tr>
-        
-        
-        <td class="text-center">{{suppliers.Supplier_Name}}</a></td> 
-        <td class="text-center">{{suppliers.Supplier_Phone_number}}</td>
-        
-        <!-- <td class="text-center"><a class="btn btn-info btn-sm mr-2" href="{% url 'records' prods.id %}">View</a>
-          <a href="{% url 'delete_records' prods.id %}" class="btn btn-danger">delete</a>
-        </td>  -->
-
+          <td class="text-center">{{ suppliers.Supplier_Name }}</td>
+          <td class="text-center">{{ suppliers.Supplier_Phone_number }}</td>
+          <td class="text-center">{{ suppliers.product.Color_name }}</td>
+          <td class="text-center">{{ suppliers.product.Category }}</td>
+          <td class="text-center">{{ suppliers.product.Brand }}</td>
+          <td class="text-center">{{ suppliers.product.Color_code }}</td>
+          <td class="text-center">{{ suppliers.product.quantity }}</td>
+          <td class="text-center">{{ suppliers.product.price }}</td>
+          <td class="text-center">{{ suppliers.date }}</td>
         </tr>
-    {% endfor %}
-{% endif%}
+      {% endfor %}
+      {% endif %}
 </tbody>
 </table>
 {% endblock %}

@@ -32,8 +32,8 @@ class Product(models.Model):
     Category = models.CharField(max_length=100,null=False,choices=CATEGORY)
     Brand = models.CharField(max_length=100,null=False,choices=BRAND)
     Color_code = models.CharField(max_length=10,null=False)
-    quantity = models.PositiveIntegerField(null=False)
-    price = models.PositiveIntegerField(null=False)
+    quantity = models.PositiveIntegerField(null=True, blank=True)
+    price = models.PositiveIntegerField(null=True, blank=True)
     
     class Meta:
         verbose_name_plural = 'product'
@@ -53,3 +53,7 @@ class Supplier(models.Model):
     def __str__(self):
         return f'{self.Supplier_Name}-{self.Supplier_Phone_number} supplied the {self.product.Category}  {self.product.Brand}  {self.product.Color_code}and ordered by  on {self.date}'
     
+    
+
+
+

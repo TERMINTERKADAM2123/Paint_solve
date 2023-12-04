@@ -2,7 +2,7 @@ from django.shortcuts import render ,redirect
 from .models import Product , Supplier
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import AddRecordForm  ,StockSearchForm  ,SupplierAddForm
+from .forms import AddRecordForm  ,StockSearchForm  ,SupplierAddForm , IssueStockForm
 from django.http import JsonResponse
 # from .filters import ProductFilter
 # Create your views here.
@@ -11,8 +11,8 @@ from django.http import JsonResponse
 def home(request):
     
     return render(request,'dashboard/home.html',{})
-
-#product
+#---------------------------------------------------------------------------
+# product
 @login_required()
 def product_view(request):
     form = StockSearchForm(request.POST or None )
@@ -57,6 +57,25 @@ def update_records(request,pk):
         messages.success(request,"record has been updated")
         return redirect('home')
     return render(request,'product/update_records.html',{'form':form})
+
+def issue_product(request):
+    if request.method == 'POST':
+        form = IssueStockForm(request.POST)
+        if form.is_valid():
+            stock = form.save(commit=False)
+            product = stock.product
+
+            if product.quantity >= stock.quantity:
+                product.quantity -= stock.quantity
+                product.save()
+                stock.save()
+                return redirect('home')  # Replace 'home' with the name of your home view
+            else:
+                form.add_error('quantity', 'Not enough quantity available.')
+    else:
+        form = IssueStockForm()
+
+    return render(request, 'product/issue_product.html', {'form': form})
 
 #supplier 
 @login_required()

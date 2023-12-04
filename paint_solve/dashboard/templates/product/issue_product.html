@@ -1,0 +1,13 @@
+<!-- issue_product.html -->
+{% extends 'dashboard/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Issue Product{% endblock %}
+
+{% block content %}
+   <h1>Issue Product</h1>
+   <form method="post" action="{% url 'issue_product' %}">
+       {% csrf_token %}
+       {{ form|crispy}}
+       <button type="submit">Issue Product</button>
+   </form>
+{% endblock %}

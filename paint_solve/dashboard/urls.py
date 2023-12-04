@@ -6,6 +6,7 @@ urlpatterns = [
     path('products/',views.product_view,name="products"),
     path('supplier/',views.supplier,name="supplier"),
     path('add_record/',views.add_record,name="add_record"),
+    path('issue_product/',views.issue_product,name="issue_product"),
     path('add_supplier/',views.add_supplier,name="add_supplier"),
     path('records/<int:pk>',views.product_record,name="records"),
     path('delete_records/<int:pk>',views.delete_record,name="delete_records"),

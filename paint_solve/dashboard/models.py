@@ -59,5 +59,12 @@ class Supplier(models.Model):
     
     
 
+class Stock(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=False)
+    quantity = models.IntegerField(null=False)
+    issued_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.product.Color_name} - {self.quantity} issued on {self.issued_date}"
 
 

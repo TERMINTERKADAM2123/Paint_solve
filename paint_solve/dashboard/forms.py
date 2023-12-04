@@ -1,5 +1,5 @@
 from django import forms
-from .models import Product ,Supplier
+from .models import Product ,Supplier ,Stock
 CATEGORY = (
     ('Oil Paint','Oil Paint'),
     ('Cement Paint','Cement Paint'),
@@ -60,6 +60,20 @@ class SupplierAddForm(forms.ModelForm):
     quantity = forms.IntegerField()
     price = forms.IntegerField()
 
+
+class IssueStockForm(forms.ModelForm):
+    class Meta:
+        model = Stock
+        fields = ['product', 'quantity']
+
+    def clean_quantity(self):
+        quantity = self.cleaned_data['quantity']
+        product = self.cleaned_data['product']
+
+        if product.quantity < quantity:
+            raise forms.ValidationError('Not enough quantity available.')
+
+        return quantity
 
 
 # class SupplierForm(forms.ModelForm):

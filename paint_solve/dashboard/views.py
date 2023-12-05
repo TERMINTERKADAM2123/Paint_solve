@@ -69,7 +69,8 @@ def issue_product(request):
                 product.quantity -= stock.quantity
                 product.save()
                 stock.save()
-                return redirect('home')  # Replace 'home' with the name of your home view
+                product.check_quantity_threshold()
+                return redirect('issue_product')  
             else:
                 form.add_error('quantity', 'Not enough quantity available.')
     else:

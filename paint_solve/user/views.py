@@ -1,8 +1,9 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth import authenticate , login , logout
 from django.contrib import messages
-from django.contrib.auth.forms import UserCreationForm 
-from .forms import RegisterUserForm
+from .forms import RegisterUserForm ,EditProfileForm ,UserChangeForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -35,8 +36,37 @@ def register_user(request):
             user = authenticate(username=username,password=password)
             login(request,user)
             messages.success(request,"registration succesfulll")
-            return redirect('home')
+            return redirect('login')
     else:
         form = RegisterUserForm()
             
     return render(request,'authentication/register.html',{'form':form,})
+
+
+
+@login_required
+def user_profile(request):
+    user = request.user
+    return render(request, 'profile/user_profile.html', {'user': user})
+
+# views.py
+
+
+@login_required
+def edit_profile(request, user_id):
+    if not request.user.is_staff:
+        # Only allow admin users to access this view
+        return redirect('user_profile')  # Redirect to the user's profile page
+
+    # Retrieve the user using the provided user_id
+    user_to_edit = get_object_or_404(User, pk=user_id)
+
+    if request.method == 'POST':
+        form = EditProfileForm(user_to_edit, request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('user_profile')  # Redirect to the user's profile page
+    else:
+        form = EditProfileForm(instance=user_to_edit)
+
+    return render(request, 'profile/edit_profile.html', {'form': form, 'user_to_edit': user_to_edit})

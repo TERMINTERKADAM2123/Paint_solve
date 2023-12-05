@@ -1,0 +1,39 @@
+<!-- user_profile.html -->
+{% extends 'dashboard/base.html' %}
+{% block title %}User Profile{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+      <strong>User Profile</strong>
+    </div>
+   
+    <div class="card-body">
+      
+      <p class="card-text">
+        <strong>Username:</strong> {{ user.username }}</p>
+
+        <p class="card-text">
+            <strong>Email: </strong> {{ user.email }} </p>
+        <p class="card-text">
+        <strong>First Name:</strong>{{ user.first_name }} <br>
+        <p class="card-text">
+        <strong>Last Name:</strong>{{ user.last_name }} </p>
+
+      
+        
+      </p>
+      
+    </div>
+  </div>
+
+  
+{% endblock %}
+<h1></h1>
+    <p> </p>
+    <p></p>
+    <p> </p>
+    <p> </p>
+    <!-- Add more fields as needed -->
+
+    <p><a href="{% url 'edit_profile' %}">Edit Profile</a></p>

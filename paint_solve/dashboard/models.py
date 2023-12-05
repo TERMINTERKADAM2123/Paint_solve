@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import Signal
+from django.dispatch import receiver
 BRAND = (
     ('Asian Paints','Asian Paints'),
     ('Berger Paints','Berger Paints'),
@@ -31,17 +33,27 @@ CATEGORY = (
 
 class Product(models.Model):
     Color_name = models.CharField(max_length=100, null=False)
-    Category = models.CharField(max_length=100, null=False, choices=CATEGORY)
-    Brand = models.CharField(max_length=100, null=False, choices=BRAND)
+    Category = models.CharField(max_length=100, null=False)
+    Brand = models.CharField(max_length=100,choices=BRAND, null=False)
     Color_code = models.CharField(max_length=10, null=False)
-    quantity = models.IntegerField(null=False)  
-    price = models.IntegerField(null=False)  
-
-    class Meta:
-        verbose_name_plural = 'products'
+    quantity = models.PositiveIntegerField(null=False, default=0)
+    price = models.PositiveIntegerField(null=False)
+    alert_threshold = models.IntegerField(default=10, help_text="Set the alert threshold for low stock")
 
     def __str__(self):
-        return f'{self.Color_name}-{self.Category}-{self.Brand}-{self.Color_code}-{self.quantity}-{self.price}'
+        return f'{self.Color_name}'
+
+    def check_quantity_threshold(self):
+        if self.quantity <= self.alert_threshold:
+            stock_alert.send(sender=self.__class__, product=self)
+
+# Signal
+stock_alert = Signal()
+
+# Signal handler
+@receiver(stock_alert)
+def stock_alert_handler(sender, **kwargs):
+    product = kwargs['product']
 
     
 
@@ -66,5 +78,8 @@ class Stock(models.Model):
 
     def __str__(self):
         return f"{self.product.Color_name} - {self.quantity} issued on {self.issued_date}"
+
+
+
 
 

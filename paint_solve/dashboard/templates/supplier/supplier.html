@@ -29,6 +29,7 @@
         <th scope="col"class="text-center">Quantity</th>
         <th scope="col"class="text-center">Price</th>
         <th scope="col" class="text-center">date</th>
+        <th scope="col" class="text-center">activity</th>
         
         <!-- <th scope="col"class="text-center">Activity</th> -->
         
@@ -49,6 +50,8 @@
           <td class="text-center">{{ suppliers.product.quantity }}</td>
           <td class="text-center">{{ suppliers.product.price }}</td>
           <td class="text-center">{{ suppliers.date }}</td>
+          <td class="text-center"><a class="btn btn-info btn-sm mr-2" href="{% url 'supplier_records' suppliers.id %}">View</a>
+          </td>
         </tr>
       {% endfor %}
       {% endif %}

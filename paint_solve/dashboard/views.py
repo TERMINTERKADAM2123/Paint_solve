@@ -1,16 +1,26 @@
-from django.shortcuts import render ,redirect
-from .models import Product , Supplier
+from django.shortcuts import render ,redirect,get_object_or_404
+from .models import Product , Supplier,Stock
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import AddRecordForm  ,StockSearchForm  ,SupplierAddForm , IssueStockForm
 from django.http import JsonResponse
+from django.db import IntegrityError
+from django.db import models
+
+
+
 # from .filters import ProductFilter
 # Create your views here.
 
 @login_required()
 def home(request):
-    
-    return render(request,'dashboard/home.html',{})
+    categories = Product.objects.values('Category').annotate(total_quantity=models.Sum('quantity'))
+    brands = Product.objects.values('Brand').annotate(total_quantity=models.Sum('quantity'))
+    context = {
+        'categories': categories,
+        'brands': brands,
+    }
+    return render(request,'dashboard/home.html',context)
 #---------------------------------------------------------------------------
 # product
 @login_required()
@@ -38,15 +48,47 @@ def delete_record(request,pk):
     messages.success(request,"Product Record is deleted Successfully  ")
     return redirect('products')
 
-@login_required()
+
 def add_record(request):
     form = AddRecordForm(request.POST or None)
+
     if request.method == "POST":
-            if form.is_valid():
+        if form.is_valid():
+            try:
+                # Try to create a new product record
                 add_record = form.save()
-                messages.success(request,"Product added Successfully ")
+
+                messages.success(request, "Product added successfully")
                 return redirect('products')
-    return render(request,'product/add_record.html',{'form':form})
+
+            except IntegrityError:
+                # Handle the case where a product with the same attributes already exists
+                existing_product = Product.objects.get(
+                    Color_name=form.cleaned_data['Color_name'],
+                    Category=form.cleaned_data['Category'],
+                    Brand=form.cleaned_data['Brand'],
+                    Color_code=form.cleaned_data['Color_code'],
+                    price=form.cleaned_data['price']
+                )
+
+                # Update the existing product quantity or perform any other necessary update
+                existing_product.quantity += form.cleaned_data['quantity']
+                existing_product.save()
+
+                messages.success(request, "Product quantity updated successfully")
+                return redirect('products')
+
+    return render(request, 'product/add_record.html', {'form': form})
+
+# @login_required()
+# def add_record(request):
+#     form = AddRecordForm(request.POST or None)
+#     if request.method == "POST":
+#             if form.is_valid():
+#                 add_record = form.save()
+#                 messages.success(request,"Product added Successfully ")
+#                 return redirect('products')
+#     return render(request,'product/add_record.html',{'form':form})
 
 @login_required()
 def update_records(request,pk):
@@ -119,3 +161,15 @@ def add_supplier(request):
     
     return render(request, 'supplier/add_supplier.html', {'form': form})
 
+
+@login_required()
+def supplier_record(request, pk):
+   
+    supplier_record = Supplier.objects.get(id=pk)
+    context = {
+        'supplier_record':supplier_record
+    }
+    return render(request, 'supplier/supplier_records.html',context )
+
+
+#stock 

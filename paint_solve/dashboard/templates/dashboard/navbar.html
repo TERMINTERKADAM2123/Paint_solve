@@ -38,7 +38,8 @@
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="{% url 'supplier' %}">View Supplier</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="{% url 'add_supplier' %}">Add Supplier</a></li>
+              <li><a class="dropdown-item" href="{% url 'add_supplier' %}">Add Supplier</a></li> 
+             
             </ul>
             
           </li>
@@ -53,9 +54,10 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'logout' %}">logout</a>
           </li>
-          <form class="d-flex" role="search">
+          
+          
             
-            <button class="btn btn-outline-success" type="submit">Search</button>
+            
           </form>
           {% else%}
           

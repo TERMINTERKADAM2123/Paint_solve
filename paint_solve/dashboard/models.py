@@ -33,12 +33,14 @@ CATEGORY = (
 
 class Product(models.Model):
     Color_name = models.CharField(max_length=100, null=False)
-    Category = models.CharField(max_length=100, null=False)
+    Category = models.CharField(max_length=100,choices=CATEGORY, null=False)
     Brand = models.CharField(max_length=100,choices=BRAND, null=False)
     Color_code = models.CharField(max_length=10, null=False)
     quantity = models.PositiveIntegerField(null=False, default=0)
     price = models.PositiveIntegerField(null=False)
     alert_threshold = models.IntegerField(default=10, help_text="Set the alert threshold for low stock")
+    
+    
 
     def __str__(self):
         return f'{self.Color_name}'
@@ -80,6 +82,12 @@ class Stock(models.Model):
         return f"{self.product.Color_name} - {self.quantity} issued on {self.issued_date}"
 
 
-
+def update_product_quantity(sender, instance, **kwargs):
+    """
+    Signal handler to update product quantity when new stock is added.
+    """
+    product = instance.product
+    product.quantity += instance.quantity
+    product.save()
 
 

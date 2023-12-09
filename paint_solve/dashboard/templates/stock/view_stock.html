@@ -1,0 +1,38 @@
+<!-- stock_list.html -->
+{% extends 'dashboard/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<br>
+<table class="table table-striped table-hover table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col" class="text-center">product</th>
+        <th scope="col" class="text-center">Color name</th>
+        <th scope="col" class="text-center">Category</th>
+        <th scope="col" class="text-center">Brand</th>
+        <th scope="col" class="text-center">Color code</th>
+        <th scope="col" class="text-center">Quantity</th>
+        <th scope="col" class="text-center">Price</th>
+        
+      </tr>
+    </thead>
+    <tbody>
+        {% if stocks %}
+        {% for stock in stocks %}
+          <tr>
+            <td class="text-center">{{ stock.product }}</td>            <!-- Add more fields for debugging -->
+            <td class="text-center">{{ stock.product.Color_name }}</td>
+            <td class="text-center">{{ stock.product.Category }}</td>
+            <td class="text-center">{{ stock.product.Brand }}</td>
+            <td class="text-center">{{ stock.product.Color_code }}</td>
+            <td class="text-center">{{ stock.product.quantity }}</td>
+            <td class="text-center">{{ stock.product.price }}</td>
+          </tr>
+        {% endfor %}
+      {% endif %}
+    </tbody>
+</table>
+
+
+{% endblock %}

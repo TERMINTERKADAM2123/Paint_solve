@@ -1,7 +1,7 @@
-from django.shortcuts import render,redirect,get_object_or_404
+from django.shortcuts import render,redirect,get_object_or_404,HttpResponse
 from django.contrib.auth import authenticate , login , logout
 from django.contrib import messages
-from .forms import RegisterUserForm ,EditProfileForm ,UserChangeForm
+from .forms import  EditProfileForm ,UserChangeForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
@@ -26,21 +26,41 @@ def logout_user(request):
     messages.success(request,"you have been logged out")
     return redirect('login')
 
+
+
 def register_user(request):
-    if request.method == "POST":
-        form = RegisterUserForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password1']
-            user = authenticate(username=username,password=password)
-            login(request,user)
-            messages.success(request,"registration succesfulll")
+    if request.method=='POST':
+        uname=request.POST.get('username')
+        email=request.POST.get('email')
+        pass1=request.POST.get('password1')
+        pass2=request.POST.get('password2')
+        
+        if pass1!=pass2:    
+            return HttpResponse("Your password and confirm password are not same!!!")
+        else:
+            my_user=User.objects.create_user(uname,email,pass1)
+            my_user.save()
+           
             return redirect('login')
-    else:
-        form = RegisterUserForm()
+           
+    return render(request,'authentication/register.html')
+    
+
+# def register_user(request):
+#     if request.method == "POST":
+#         form = RegisterUserForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             username = form.cleaned_data['username']
+#             password = form.cleaned_data['password1']
+#             user = authenticate(username=username,password=password)
+#             login(request,user)
+#             messages.success(request,"registration succesfulll")
+#             return redirect('login')
+#     else:
+#         form = RegisterUserForm()
             
-    return render(request,'authentication/register.html',{'form':form,})
+#     return render(request,'authentication/register.html',{'form':form,})
 
 
 

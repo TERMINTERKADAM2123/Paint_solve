@@ -1,6 +1,7 @@
 
 
 # Paint_solve
+
 use python 3.9.0 to use mysql database connector mysqlclient<br>
 cd into paint_solve/paint_solve and change settings.py to add database 
 name of the database, password </p>
